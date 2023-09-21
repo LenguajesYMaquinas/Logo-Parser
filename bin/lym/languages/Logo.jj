@@ -1,0 +1,379 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */
+options
+{
+  static = false;
+}
+
+PARSER_BEGIN(Logo)
+package lym.languages;
+
+public class Logo {
+  public static void main(String args []) throws ParseException
+  {
+    Logo parser = new Logo(System.in);
+    while (true)
+    {
+      try
+      {
+        switch (parser.esCorrecto())
+        {
+          case 0 : 
+          System.out.println("OK.");
+          break;
+          case 1 : 
+          System.out.println("Goodbye.");
+          break;
+          default : 
+          break;
+        }
+      }
+      catch (Exception e)
+      {
+        System.out.println("NOK.");
+        System.out.println(e.getMessage());
+       // Logo.ReInit(System.in);
+      }
+      catch (Error e)
+      {
+        System.out.println("Oops.");
+        System.out.println(e.getMessage());
+        break;
+      }
+    }
+  }
+}
+
+PARSER_END(Logo)
+
+SKIP :
+{
+  	 "\r"
+	|"\t"
+
+}
+
+TOKEN :
+{
+	  < STRING: [":"](["a"-"z","A"-"Z"])+ >
+	| < STRING1: (["a"-"z","A"-"Z"])+ >	 
+	| < NUMERO: ("-")?(["0"-"9"])+("."(["0"-"9"])+)?>
+	| < SPACE : (" ")+ >
+	| < OPERADORBOOLEANO: "<" | ">" | "=" | "<=" | ">=" >
+	| < TEXTO: "!"(["a"-"z","A"-"Z"])+>
+	| < CHANGESHAPETOKEN: "changeshape" >
+}
+
+int esCorrecto() :
+{}
+{
+  programa()
+  {
+    return 0;
+  }
+|
+  {
+    return 1;
+  }
+}
+
+
+void number() :
+{}
+{
+	  ("random" < SPACE > < NUMERO >)
+	| (< NUMERO > [("+"|"-"|"*"|"/") number()])
+	| ("sum" < SPACE > number() < SPACE > number())
+	| ("difference" < SPACE > number() < SPACE > number())
+	| "!" < STRING >
+}
+
+void programa() :
+{}
+{
+	(comando()) ("\n" comando())*
+}
+
+void comando() :
+{}
+{
+	  comandoMithenParametro()
+	| comandoMonoParametroNumero()
+	| comandoMonoParametroString()
+	| comandoMonoParametroNumeroOString()
+	| comandoBiParametroNumeroNumero()
+}
+
+void comandoMithenParametro() :
+{}
+{
+	  make()
+	| toLlamado()
+	| print()
+	| repeat()
+	| clearScreen()
+	| penUp()
+	| penDown()
+	| hideTurtle()
+	| showTurtle()
+	| home()
+	| to()
+	| forLoop()
+}
+
+void comandoMonoParametroNumero() :
+{}
+{
+	  forward()
+	| back()
+	| right()
+	| left()
+	| setX()
+	| setY()
+	| arc()
+	| setColor()
+	| setWidth()
+	| setLabelHeight()
+	| setHeading()
+}
+
+void comandoMonoParametroString() :
+{}
+{
+	label()
+}
+
+void comandoMonoParametroNumeroOString() :
+{}
+{
+	changeShape()
+}
+
+void comandoBiParametroNumeroNumero() :
+{}
+{
+	setXY()
+}
+
+void make() :
+{}
+{
+	"make" < SPACE > <TEXTO > < SPACE > (< TEXTO > | number())
+}
+
+void toLlamado() :
+{}
+{
+	< STRING > (< SPACE > number())*
+}
+
+void forLoop() :
+{}
+{
+	"for" [< SPACE >] "[" < STRING > < SPACE > number() < SPACE > number() < SPACE > number() "]" [< SPACE >] "[" programa() "]"
+}
+
+void operacion() :
+{}
+{
+	sum() | difference() | multiplicacion() | division()
+}
+
+void sum() :
+{}
+{
+	("sum" < SPACE > number() < SPACE > number()) | (number() [< SPACE >] "+" [< SPACE >] number())
+}
+
+void difference() :
+{}
+{
+	("difference" < SPACE > number() < SPACE > number()) | (number() [< SPACE >] "-" [< SPACE >] number())
+}
+
+void multiplicacion() :
+{}
+{
+	number() [< SPACE >] "*" [< SPACE >] number()
+}
+
+void division() :
+{}
+{
+	number() [< SPACE >] "/" [< SPACE >] number()
+}
+
+void repeat() :
+{}
+{
+	"repeat" < SPACE > number() [< SPACE >] "[" [< SPACE >] programa() [< SPACE >]"]"
+}
+
+void forward() :
+{}
+{
+	("forward" | "fd") < SPACE > number()
+}
+
+void back() :
+{}
+{
+	("back" | "bk") < SPACE > number()
+}
+
+void right() :
+{}
+{
+	("right" | "rt") < SPACE > number()
+}
+
+void left() :
+{}
+{
+	("left" | "lt") < SPACE > number()
+}
+
+void clearScreen() :
+{}
+{
+	"clearscreen" | "cs"
+}
+
+void penUp() :
+{}
+{
+	"penup"
+}
+
+void penDown() :
+{}
+{
+	"pendown"
+}
+
+void hideTurtle() :
+{}
+{
+	"hideturtle"
+}
+
+void showTurtle() :
+{}
+{
+	"showturtle"
+}
+
+void home() :
+{}
+{
+	"home"
+}
+
+void setX() :
+{}
+{
+	"setx" < SPACE > number()
+}
+
+void setY() :
+{}
+{
+	"sety" < SPACE > number()
+}
+
+void setXY() :
+{}
+{
+	"setxy" < SPACE > number() < SPACE > number()
+}
+
+void setHeading() :
+{}
+{
+	("setheading" | "seth") < SPACE > number()
+}
+
+void arc() :
+{}
+{
+	"arc" < SPACE > number()
+}
+
+void changeShape() :
+{}
+{
+	(< CHANGESHAPETOKEN > | "csh") < SPACE > (< TEXTO > | number())
+}
+
+void label() :
+{}
+{
+	"label" < SPACE > < TEXTO >
+}
+
+void setLabelHeight() :
+{}
+{
+	"setlabelheight" < SPACE > number()
+}
+
+void setWidth() :
+{}
+{
+	"setwidth" < SPACE > number()
+}
+
+void setColor() :
+{}
+{
+	"setcolor" < SPACE > number()
+}
+
+void print() :
+{}
+{
+	"print" < SPACE > printArgumentos()
+}
+
+void printArgumentos() :
+{}
+{
+	pos() | xCor() | yCor() | heading() | < STRING > | number() | towards()
+}
+
+void pos() :
+{}
+{
+	"pos"
+}
+
+void xCor() :
+{}
+{
+	"xcor"
+}
+
+void yCor() :
+{}
+{
+	"ycor"
+}
+
+void heading() :
+{}
+{
+	"heading"
+}
+
+void towards() :
+{}
+{
+	"towards" < SPACE > "list" < SPACE >  number() < SPACE > number()
+}
+
+void to() :
+{}
+{
+	"to" < SPACE > "_" [< SPACE >] (< SPACE >":"< STRING >)* [< SPACE >] ["if" < SPACE > number() [< SPACE >] < OPERADORBOOLEANO > [< SPACE >] number() [< SPACE >] "[stop]"] [< SPACE >] [programa()]
+}
