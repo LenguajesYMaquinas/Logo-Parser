@@ -13,7 +13,7 @@ This program is a parser for a part of the Logo programming language, specifical
 
   The important files are:
 
-- [Logo.jj](/src/lym/languages/SwiftViews.jj): this is the main file and contains the parser code.
+- [Logo.jj](/src/lym/languages/Logo.jj): this is the main file and contains the parser code.
 
 ## Considerations
 
