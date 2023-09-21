@@ -30,9 +30,9 @@ This program is a parser for a part of the Logo programming language, specifical
 <li>If  the input was a valid program, the interface will return *OK*</li>
 </ol>
 
-##The following is a valid program:
+## The following is a valid program:
 
-forward 50
+forward 50\n
 left 90
 forward 50
 fd 50
